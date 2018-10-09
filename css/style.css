@@ -1,0 +1,33 @@
+body {
+  margin-top: 70px;
+}
+
+#head-text {
+  font-family: 'Bungee Shade', cursive;
+}
+
+#clock-text {
+  font-family: 'Bungee', cursive;
+  font-size: 1.2em;
+  margin-bottom: 20px;
+}
+
+#lol-clock {
+  font-size: 3.2em;
+  font-family: bungee;
+}
+
+#cat-img{
+  height: 350px;
+  width: 450px;
+  margin-top: 20px;
+}
+
+#img-txt {
+  font-family: impact;
+  font-size: 30px;
+  color: white;
+  position: relative;
+  top:300px;
+  text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+}
