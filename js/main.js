@@ -56,24 +56,24 @@ if (hour > 5 && hour < 12) {
 }
 */
 
-  // change the values according to time of day
+  // change the values according to time of day if it's not party time
   // doing 5 <= hour < 12 didn't work
   switch (true) {
-    case hour <= 5:
+    case hour <= 5 && partyTime === false:
       imgTxt.innerHTML = "GET SOME SLEEPZ BRO";
       catImg.style.background = "url('img/earlyMorning.jpg')";
       catImg.style.backgroundSize = "cover";
       document.body.style.backgroundColor= "#2d3037";
       clockBody.style.color = "#99ffcc";
       break;
-    case hour >= 5 && hour < 12:
+    case hour >= 5 && hour < 12 && partyTime === false:
       imgTxt.innerHTML = "GOOD MORNING";
       catImg.style.background = "url('img/morning.jpg')";
       catImg.style.backgroundSize = "cover";
       document.body.style.backgroundColor= "#fffb8c";
       clockBody.style.color = "#40232e";
       break;
-    case hour === 12:
+    case hour === 12 && partyTime === false:
       imgTxt.innerHTML = "GOOD NOON";
       catImg.style.background = "url('img/noon.jpg')";
       catImg.style.backgroundSize = "cover";
@@ -81,7 +81,7 @@ if (hour > 5 && hour < 12) {
       clockBody.style.color = "#400101";
       meridian = "PM";
       break;
-    case hour > 12 && hour <18:
+    case hour > 12 && hour <18 && partyTime === false:
       imgTxt.innerHTML = "GOOD AFTERNOON";
       catImg.style.background = "url('img/afternoon.jpg')";
       catImg.style.backgroundSize = "cover";
@@ -89,7 +89,7 @@ if (hour > 5 && hour < 12) {
       clockBody.style.color = "#400101";
       meridian = "PM";
       break;
-    case hour >= 18 && hour <22:
+    case hour >= 18 && hour <22 && partyTime === false:
       imgTxt.innerHTML = "GOOD EVENING";
       catImg.style.background = "url('img/evening.jpg')";
       catImg.style.backgroundSize = "cover";
@@ -98,7 +98,7 @@ if (hour > 5 && hour < 12) {
       clockBody.style.textShadow = "5px 5px 15px #271c2c";
       meridian = "PM";
       break;
-    case hour >= 22 && hour <= 23:
+    case hour >= 22 && hour <= 23 && partyTime === false:
       imgTxt.innerHTML = "GOOD NIGHT";
       catImg.style.background = "url('img/night.jpg')";
       document.body.style.backgroundColor= "#271c2c";
@@ -112,65 +112,48 @@ if (hour > 5 && hour < 12) {
   lolClock.innerHTML = hour +":"+ min+":" + sec + " " + meridian;
 }
 
+// update time every second
 var showTimeNow = setInterval(timeNow, 1000);
 
 
-
-
-var playing = false;
-
-/*
-function partyTime() {
-  var catMusic = new Audio('media/party.mp3');
-
-  if (playing === false) {
-    playing = true;
-    console.log("playing");
-    catMusic.play();
-    partyBtn.innerHTML = "PARTY OVER";
-  } else {
-    playing = false;
-    catMusic.pause();
-    catMusic.currentTime = 0;
-    partyBtn.innerHTML = "PARTY TIME";
-  }
-}
-*/
-
-
-
+// listen for the click of party button
 partyBtn.addEventListener("click", partyEvent);
-partyBtn.addEventListener("click", changeBG);
 
 
-
+var initBG; // define variable in the global scope
+// otherwise the if and the else, both make two different defiintions
 function partyEvent() {
 // partyTime and catMusic are defined outside
 // otherwise they get re-defined without changing the old definition
+
   if (partyTime === false) {
     partyTime = true;
     catMusic.play();
+    initBG = setInterval(changeBG, 1000);
     partyBtn.innerHTML = "PARTY OVER";
+    // change party image at a 1 second delay
+    setTimeout(partyImgChange, 1000);
+    imgTxt.innerHTML = "LETZZ PARTY!!!";
   } else {
     partyTime = false;
     catMusic.pause();
-    endBGchange();
+    catMusic.currentTime = 0;
+    // pause and reset music to 0 time
+    clearInterval(initBG); // stop the party bg change
     partyBtn.innerHTML = "PARTY TIME";
   }
-
 }
 
+function partyImgChange () {
+  catImg.style.background = "url('img/party.jpg')";
+}
 
 
 function changeBG() {
   document.body.style.backgroundColor = "";
-  var color = ["cyan", "blue", "brown", "green"];
+  var color = ["#7e9ae8", "#ff52aa", "#97ffaa", "#e8d89c", "#ffb6b2"];
     document.body.style.backgroundColor = color[i];
     i = (i + 1) % color.length;
-
-}
-var initBG = setInterval(changeBG, 1000);
-
-function endBGchange() {
-  clearInterval(initBG);
+    // the remainder equation resets to i = 0 when it goes to 4
+    // so it works like a for loop, but doesn't stop when it reaches the color.length
 }
